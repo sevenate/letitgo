@@ -6,5 +6,5 @@ go:
 
 
 script:
-# - go get -t ./...
+  - go get -t ./...
   - go build -v
