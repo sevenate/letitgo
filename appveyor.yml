@@ -1,10 +1,10 @@
 # appveyor.yml
 build: off
 
-clone_folder: c:\go\src\github.com\sevenate\letitgo
+clone_folder: c:\gopath\src\github.com\sevenate\letitgo
 
 environment:
-  GOPATH: c:\go
+  GOPATH: c:\gopath
 
 stack: go 1.11
 
