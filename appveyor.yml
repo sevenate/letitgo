@@ -8,7 +8,7 @@ environment:
 
 stack: go 1.11
 
-before_build:
+install:
   - go get -t -v ./...
 
 before_test:
