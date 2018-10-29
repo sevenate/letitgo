@@ -5,6 +5,7 @@ go:
   - master
 
 before_install:
+  - go get github.com/mattn/goveralls
   - go get -t -v ./...
 
 install:
@@ -16,6 +17,7 @@ script:
   - diff -u <(echo -n) <(gofmt -d -s .)
   - go vet ./...
   - go test -v -tags test -race -coverprofile=coverage.txt -covermode=atomic ./...
+  - $GOPATH/bin/goveralls -service=travis-ci
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
