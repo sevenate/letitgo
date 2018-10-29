@@ -6,19 +6,16 @@ go:
 
 before_install:
   - go get -t -v ./...
-# - chmod +x go.test.sh
 
 install:
   - # Do nothing. This is needed to prevent default install action "go get -t -v ./..." from happening here (we want it to happen inside script step).
 
 script:
-# - go get -t ./...
+# - go get -t -v ./...
 # - go build -v
   - diff -u <(echo -n) <(gofmt -d -s .)
   - go tool vet . #/...
-# - go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
   - go test -v -tags test -race -coverprofile=coverage.txt -covermode=atomic ./...
-# - ./go.test.sh
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
