@@ -17,7 +17,7 @@ script:
   - diff -u <(echo -n) <(gofmt -d -s .)
   - go tool vet . #/...
 # - go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
-  - go test -v -race -covermode=atomic ./... >> coverage.txt
+  - go test -v -tags test -race -covermode=atomic ./... >> coverage.txt
 # - ./go.test.sh
 
 after_success:

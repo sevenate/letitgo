@@ -1,16 +1,24 @@
 package core
 
 import (
-	"math"
 	"testing"
 )
 
-func TestExample(t *testing.T) {
-	var v float64
+func TestSum(t *testing.T) {
+	var v int;
 
-	v = math.Pow(2.0, 4.0)
+	v = Sum(2, 4)
 
-	if v != 16.0 {
-		t.Error("Expected 16.0, got ", v)
+	if v != 6 {
+		t.Error("Expected 6, got ", v)
+	}
+}
+
+func TestSum2(t *testing.T) {
+
+	v := Sum(5, 0)
+
+	if v != 5 {
+		t.Error( "Expected 5, got ", v)
 	}
 }
