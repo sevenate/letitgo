@@ -1,4 +1,6 @@
 # appveyor.yml
+version: "{build}"
+
 build: off
 
 clone_folder: c:\gopath\src\github.com\sevenate\letitgo
