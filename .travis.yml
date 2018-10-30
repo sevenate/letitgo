@@ -6,18 +6,21 @@ go:
 
 before_install:
   - go get github.com/mattn/goveralls
-  - go get -t -v ./...
-
+  # gox simplifies building for multiple architectures
+  - go get github.com/mitchellh/gox
+ 
 install:
   - # Do nothing. This is needed to prevent default install action "go get -t -v ./..." from happening here (we want it to happen inside script step).
 
 script:
-# - go get -t -v ./...
-# - go build -v
+  - go get -t -v ./...
   - diff -u <(echo -n) <(gofmt -d -s .)
-  - go vet ./...
+# - go vet ./...
+  - go vet $(go list ./... | grep -v /vendor/)
   - go test -v -tags test -race -coverprofile=coverage.txt -covermode=atomic ./...
   - $GOPATH/bin/goveralls -service=travis-ci
+  # Only build binaries from the latest Go release.
+  - if [ "${LATEST}" = "true" ]; then gox -os="linux darwin windows" -arch="amd64" -output="letitgo.." -ldflags "-X main.Rev=`git rev-parse --short HEAD`" -verbose ./...; fi
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
