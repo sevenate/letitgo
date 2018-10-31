@@ -2,32 +2,43 @@ language: go
 sudo: false
 matrix:
   include:
-    # "1.x" always refers to the latest Go version, inc. the patch release.
-    # e.g. "1.x" is 1.11 until 1.11.1 is available.
-    - go: 1.x
-      env: LATEST=true
-    - go: 1.11.x
-    - go: tip
+  # "1.x" always refers to the latest Go version, inc. the patch release.
+  # e.g. "1.x" is 1.11 until 1.11.1 is available.
+  - go: 1.x
+    env: LATEST=true
+  - go: 1.11.x
+  - go: tip
   allow_failures:
-    - go: tip
+  - go: tip
 
 before_install:
-  - go get github.com/mattn/goveralls
-  # gox simplifies building for multiple architectures
-  - go get github.com/mitchellh/gox
- 
+- go get github.com/mattn/goveralls
+# gox simplifies building for multiple architectures
+- go get github.com/mitchellh/gox
+
 install:
-  - # Do nothing. This is needed to prevent default install action "go get -t -v ./..." from happening here (we want it to happen inside script step).
+- # Do nothing. This is needed to prevent default install action "go get -t -v ./..." from happening here (we want it to happen inside script step).
 
 script:
-  - go get -t -v ./...
-  - diff -u <(echo -n) <(gofmt -d -s .)
+- go get -t -v ./...
+- diff -u <(echo -n) <(gofmt -d -s .)
 # - go vet ./...
-  - go vet $(go list ./... | grep -v /vendor/)
-  - go test -v -tags test -race -coverprofile=coverage.txt -covermode=atomic ./...
-  - $GOPATH/bin/goveralls -service=travis-ci
-  # Only build binaries from the latest Go release.
-  - if [ "${LATEST}" = "true" ]; then gox -os="linux darwin windows" -arch="amd64" -output="letitgo.." -ldflags "-X main.Rev=`git rev-parse --short HEAD`" -verbose ./...; fi
+- go vet $(go list ./... | grep -v /vendor/)
+- go test -v -tags test -race -coverprofile=coverage.txt -covermode=atomic ./...
+- $GOPATH/bin/goveralls -service=travis-ci
+# Only build binaries from the latest Go release.
+- if [ "${LATEST}" = "true" ]; then gox -os="linux darwin windows" -arch="amd64" -output="letitgo.." -ldflags "-X main.Rev=`git rev-parse --short HEAD`" -verbose ./...; fi
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.io/bash)
+
+
+deploy:
+  provider: releases
+  api_key:
+    secure: jO49Vd2Fo92uRjNKC9CBReCMsxQzqM6uyvk0Hg4uuEpA+Cq3Yfm8/tLoTDAWfggNGnZAj/CWAoXhGbKCpW4bGUfHQOB5hVyS22VNQaU5FkBXheCie2ai1iUgd8D21excssUhhWBm0Lwtu9dbdsJMw+rTrIuhBl4ZBC/SrAM7ELca4tkaMqT3gff98GW2hD7udgidBnMO1iVxq7wDenuzpRCpuA8op/mT3mc+4yGqQw/Oev95u7LJcvxYt4HaJ77/4Hqc9/cKXOPQiD1/R1voq5HXX+q8H6U1MHL7LI26QKONhHlvbHydY2aWUPgujs81K5cyON4vnHva5+/A+SLhS4tYLAkMSh+O/aFUBQ7mqJ0G2pC+H2oIEJVI+C0Ru5EIKRJJnlTuJT42gm+HwjyQ89ZMaPLL+HG5aTJlLxPI1WvnbUtwnLZnD9IGWHE991LL80KYzadTsq2vpP+28a6/oQvJ+M8SJJEMgiXg6GaBSoWbOKTAnZlUdmBD5oXhvneDZYx6zpAONl9ZzvvbZW3bNzA3ZWueIiom3W9FOeZKULFZ5MRAhHl3zvhUBi021U8735p0QXeyVbET6b4yo4C0czrft83lc5RYYy7YPK7SMEJ3bgZGLVJ3Y7BrQZOkStA/fNfeZmTLqUC8V+XxTa9MveLc/cHj59L4ZIGunkFoRYg=
+  file: ''
+  skip_cleanup: true
+  on:
+    tags: true
+ #  repo: sevenate/letitgo
