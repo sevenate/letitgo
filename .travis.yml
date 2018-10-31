@@ -32,13 +32,19 @@ script:
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 
-
 deploy:
   provider: releases
+  skip_cleanup: true
   api_key:
     secure: jO49Vd2Fo92uRjNKC9CBReCMsxQzqM6uyvk0Hg4uuEpA+Cq3Yfm8/tLoTDAWfggNGnZAj/CWAoXhGbKCpW4bGUfHQOB5hVyS22VNQaU5FkBXheCie2ai1iUgd8D21excssUhhWBm0Lwtu9dbdsJMw+rTrIuhBl4ZBC/SrAM7ELca4tkaMqT3gff98GW2hD7udgidBnMO1iVxq7wDenuzpRCpuA8op/mT3mc+4yGqQw/Oev95u7LJcvxYt4HaJ77/4Hqc9/cKXOPQiD1/R1voq5HXX+q8H6U1MHL7LI26QKONhHlvbHydY2aWUPgujs81K5cyON4vnHva5+/A+SLhS4tYLAkMSh+O/aFUBQ7mqJ0G2pC+H2oIEJVI+C0Ru5EIKRJJnlTuJT42gm+HwjyQ89ZMaPLL+HG5aTJlLxPI1WvnbUtwnLZnD9IGWHE991LL80KYzadTsq2vpP+28a6/oQvJ+M8SJJEMgiXg6GaBSoWbOKTAnZlUdmBD5oXhvneDZYx6zpAONl9ZzvvbZW3bNzA3ZWueIiom3W9FOeZKULFZ5MRAhHl3zvhUBi021U8735p0QXeyVbET6b4yo4C0czrft83lc5RYYy7YPK7SMEJ3bgZGLVJ3Y7BrQZOkStA/fNfeZmTLqUC8V+XxTa9MveLc/cHj59L4ZIGunkFoRYg=
-  file: ''
-  skip_cleanup: true
+  file:
+  # The names of the binaries to output, based on the -output template passed to gox.
+  - logshare.windows.amd64.exe
+  - logshare.darwin.amd64
+  - logshare.linux.amd64
   on:
+    # What repository to build
+    repo: sevenate/letitgo
+    # Only build binaries for tagged commits
     tags: true
- #  repo: sevenate/letitgo
+    condition: $LATEST = true
