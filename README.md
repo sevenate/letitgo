@@ -11,3 +11,11 @@
 [![GitHub release](https://img.shields.io/github/release/sevenate/letitgo.svg)](https://github.com/sevenate/letitgo/releases)
 
 [Code of Conduct](CODE_OF_CONDUCT.md)
+
+## How to turn on ANSI colors in console on Windows 10
+
+> Windows Registry Editor Version 5.00
+
+> [HKEY_CURRENT_USER\Console]
+
+> "VirtualTerminalLevel"=dword:00000001
