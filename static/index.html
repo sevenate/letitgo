@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link rel="icon" href="data:,">
+
+    <!-- You MUST include jQuery before Fomantic -->
+    <script src="//cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <link href="//cdn.jsdelivr.net/npm/fomantic-ui@2.7.6/dist/semantic.min.css" rel="stylesheet" type="text/css" />
+    <script src="//cdn.jsdelivr.net/npm/fomantic-ui@2.7.6/dist/semantic.min.js"></script>
+
+    <style type="text/css">
+        #headerTable td {
+            -webkit-transition: background-color 2000ms linear;
+            -moz-transition: background-color 2000ms linear;
+            -o-transition: background-color 2000ms linear;
+            -ms-transition: background-color 2000ms linear;
+            transition: background-color 2000ms linear;
+        }
+
+        #headerTable td.highlight {
+            background-color: #FF0;
+
+            -webkit-transition: background-color 0ms linear;
+            -moz-transition: background-color 0ms linear;
+            -o-transition: background-color 0ms linear;
+            -ms-transition: background-color 0ms linear;
+            transition: background-color 0ms linear;
+        }
+    </style>
+
+    <meta charset=utf-8 />
+    <meta name="viewport" content="width=device-width" />
+    <title>Monitor</title>
+</head>
+
+<body>
+    <div class="ui centered grid" style="height:100%">
+        <div class="row">
+            <div class="column">
+                <div class="ui two column stackable grid container">
+                    <div class="column">
+                        <div class="ui horizontally fitted segment basic">
+                            <table id="headerTable" class="ui definition table updatable"><tbody>
+                                <tr><td>Field 1</td><td></td></tr>
+                                <tr><td>Field 2</td><td></td></tr>
+                                <tr><td>Field 3</td><td></td></tr>
+                            </tbody></table>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="ui horizontally fitted segment basic">
+                            <table id="headerTable" class="ui definition table updatable"><tbody>
+                                <tr><td>Field 4</td><td></td></tr>
+                                <tr><td>Field 5</td><td></td></tr>
+                                <tr><td>Field 6</td><td></td></tr>
+                            </tbody></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bottom aligned row">
+            <div class="column">
+                <div class="ui container">
+                    <p>&copy; <script>document.write(new Date().getFullYear())</script> Sevenate</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
