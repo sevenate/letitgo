@@ -26,7 +26,7 @@ script:
 - go test -v -tags test -race -coverprofile=coverage.txt -covermode=atomic ./...
 - $GOPATH/bin/goveralls -service=travis-ci
 # Only build binaries from the latest Go release.
-- if [ "${LATEST}" = "true" ]; then gox -os="linux darwin windows" -arch="amd64" -output="{{.Dir}}.{{.OS}}.{{.Arch}}" -ldflags "-X main.Rev=`git rev-parse --short HEAD`" -verbose ./...; fi
+- if [ "${LATEST}" = "true" ]; then gox -os="linux darwin windows" -arch="amd64" -output="{{.Dir}}.{{.OS}}.{{.Arch}}" -ldflags "-X main.version=0.1 -X main.date=`date -u --iso-8601=seconds` -X main.commit=`git rev-parse --short HEAD`" -verbose ./...; fi
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
