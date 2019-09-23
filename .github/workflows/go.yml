@@ -16,21 +16,21 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
 
-    - name: Get dependencies
+    - name: Get dependencies (go get)
       run: |
-        go get -v -t -d ./...
+        go get -v -d ./...
 
-    - name: Check style
-      run: |
-        diff -u <(echo -n) <(gofmt -d -s .)
-
-    - name: Vet the code
-      run: |
-        go vet $(go list ./... | grep -v /vendor/)
-
-    - name: Generate the code
+    - name: Generate the code (go generate)
       run: |
         go generate
 
-    - name: Build
+    - name: Check style (gofmt)
+      run: |
+        diff -u <(echo -n) <(gofmt -d -s .)
+
+    - name: Vet the code (go vet)
+      run: |
+        go vet $(go list ./... | grep -v /vendor/)
+
+    - name: Build (go build)
       run: go build -v .
