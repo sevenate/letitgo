@@ -21,7 +21,7 @@ jobs:
         go get -v -t -d ./...
         diff -u <(echo -n) <(gofmt -d -s .)
         go vet $(go list ./... | grep -v /vendor/)
-        go test -v -tags test -race -coverprofile=coverage.txt -covermode=atomic ./...
+        go generate
 
     - name: Build
       run: go build -v .
