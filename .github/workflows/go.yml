@@ -15,22 +15,6 @@ jobs:
     - name: Check out source code
       uses: actions/checkout@v1
 
-    #- name: Get dependencies (go get)
-    #  run: |
-    #    go get -v -d ./...
-
-    #- name: Generate the code (go generate)
-    #  run: |
-    #    go generate
-
-    #- name: Check style (gofmt)
-    #  run: |
-    #    diff -u <(echo -n) <(gofmt -d -s .)
-
-    #- name: Vet the code (go vet)
-    #  run: |
-    #    go vet $(go list ./... | grep -v /vendor/)
-
     - name: Build (go build)
       run: go build -v .
 
