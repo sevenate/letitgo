@@ -1,5 +1,5 @@
-name: Go
-on: [push]
+name: Build and test Go
+on: [push, pull_request]
 jobs:
 
   build:
@@ -7,30 +7,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Set up Go 1.12
+    - name: Set up Go 1.13
       uses: actions/setup-go@v1
       with:
-        go-version: 1.12
-      id: go
+        go-version: 1.13
 
-    - name: Check out code into the Go module directory
+    - name: Check out source code
       uses: actions/checkout@v1
 
-    - name: Get dependencies (go get)
-      run: |
-        go get -v -d ./...
+    #- name: Get dependencies (go get)
+    #  run: |
+    #    go get -v -d ./...
 
-    - name: Generate the code (go generate)
-      run: |
-        go generate
+    #- name: Generate the code (go generate)
+    #  run: |
+    #    go generate
 
-    - name: Check style (gofmt)
-      run: |
-        diff -u <(echo -n) <(gofmt -d -s .)
+    #- name: Check style (gofmt)
+    #  run: |
+    #    diff -u <(echo -n) <(gofmt -d -s .)
 
-    - name: Vet the code (go vet)
-      run: |
-        go vet $(go list ./... | grep -v /vendor/)
+    #- name: Vet the code (go vet)
+    #  run: |
+    #    go vet $(go list ./... | grep -v /vendor/)
 
     - name: Build (go build)
       run: go build -v .
+
+    - name: Run tests
+        run: go test -v .
