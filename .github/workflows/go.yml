@@ -73,8 +73,20 @@ jobs:
     - name: Run tests
       run: go test -v -tags test -race -coverprofile=coverage.txt -covermode=atomic ./...
 
-    - name: Upload artifacts
+    - name: Upload letitgo.windows.amd64.exe
       uses: actions/upload-artifact@master
       with:
-        name: binaries
-        path: bin
+        name: letitgo.windows.amd64.exe
+        path: bin/letitgo.windows.amd64.exe
+
+    - name: Upload letitgo.darwin.amd64
+      uses: actions/upload-artifact@master
+      with:
+        name: letitgo.darwin.amd64
+        path: bin/letitgo.darwin.amd64
+
+    - name: Upload letitgo.linux.amd64
+      uses: actions/upload-artifact@master
+      with:
+        name: letitgo.linux.amd64
+        path: bin/letitgo.linux.amd64
