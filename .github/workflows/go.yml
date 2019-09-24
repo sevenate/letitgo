@@ -23,15 +23,33 @@ jobs:
     #  run: |
     #    go generate
 
-    #- name: Check style (gofmt)
-    #  run: |
-    #    diff -u <(echo -n) <(gofmt -d -s .)
+    - name: Generate static.go
+      # add executables installed with go get to PATH
+      # TODO: this will hopefully be fixed by
+      # https://github.com/actions/setup-go/issues/14
+      run: |
+        export PATH=${PATH}:`go env GOPATH`/bin
+        go get -u github.com/mjibson/esc
+        esc -o static.go -prefix static static
 
-    #- name: Vet the code (go vet)
-    #  run: |
-    #    go vet $(go list ./... | grep -v /vendor/)
+    - name: Generate resource.syso
+      # add executables installed with go get to PATH
+      # TODO: this will hopefully be fixed by
+      # https://github.com/actions/setup-go/issues/14
+      run: |
+        export PATH=${PATH}:`go env GOPATH`/bin
+        go get -u github.com/josephspurrier/goversioninfo
+        goversioninfo -copyright="© `date -u +%Y` Sevenate" -original-name="letitgo.exe" -ver-major=0 -ver-minor=1 -ver-patch=0 -ver-build=0 -product-version="`date -u +%Y%m%d.%H%M%S`-`git rev-parse --abbrev-ref HEAD`-`git rev-parse --short HEAD`"
 
-    - name: Staticcheck
+    - name: Check style (gofmt)
+      run: |
+        diff -u <(echo -n) <(gofmt -d -s .)
+
+    - name: Vet the code (go vet)
+      run: |
+        go vet $(go list ./... | grep -v /vendor/)
+
+    - name: Run staticcheck
       # add executables installed with go get to PATH
       # TODO: this will hopefully be fixed by
       # https://github.com/actions/setup-go/issues/14
@@ -44,4 +62,4 @@ jobs:
       run: go build -v .
 
     - name: Run tests
-      run: go test -v .
+      run: go test -v -tags test -race -coverprofile=coverage.txt -covermode=atomic ./...
