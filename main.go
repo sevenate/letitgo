@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"github.com/fatih/stopwatch"
 	"github.com/justinas/alice"
-	. "github.com/logrusorgru/aurora"
+	"github.com/logrusorgru/aurora"
 	"github.com/vharitonsky/iniflags"
 	"github.com/xi2/httpgzip"
 	"log"
@@ -135,7 +135,7 @@ func redirectTLSHandler() http.Handler {
 			target += "?" + r.URL.RawQuery
 		}
 
-		log.Printf("Redirect to: %s", BrightGreen(target))
+		log.Printf("Redirect to: %s", aurora.BrightGreen(target))
 
 		http.Redirect(w, r, target, http.StatusPermanentRedirect)
 	})
@@ -169,7 +169,7 @@ func loggerHandler(next http.Handler) http.Handler {
 
 		// as an option to determine if this is HTTP or HTTPS request
 		// check the field TLS *tls.ConnectionState on http.Request for nil
-		log.Printf("[%13s µs] - %s %s %s", Cyan(Format(friendlyElapsed)), r.Proto, r.Method, r.URL)
+		log.Printf("[%13s µs] - %s %s %s", aurora.Cyan(Format(friendlyElapsed)), r.Proto, r.Method, r.URL)
 	})
 }
 
@@ -190,7 +190,7 @@ func urlFilterHandler(next http.Handler) http.Handler {
 
 func statsHandler(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		numberOfHttpCalls.Add(fmt.Sprintf("%s", r.URL.Path), 1)
+		numberOfHttpCalls.Add(r.URL.Path, 1)
 		next.ServeHTTP(w, r)
 	})
 }
@@ -275,7 +275,7 @@ func main() {
 	}
 
 	pid := os.Getpid()
-	startedText := Sprintf(BrightWhite("Web server %s [PID - %d] is listening at %s ..."), s, BrightYellow(pid), BrightGreen("https://"+srv.Addr))
+	startedText := aurora.Sprintf(aurora.BrightWhite("Web server %s [PID - %d] is listening at %s ..."), s, aurora.BrightYellow(pid), aurora.BrightGreen("https://"+srv.Addr))
 	fmt.Println(startedText)
 
 	// redirect all HTTP -> HTTPS

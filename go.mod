@@ -16,4 +16,5 @@ require (
 	github.com/vharitonsky/iniflags v0.0.0-20180513140207-a33cd0b5f3de
 	github.com/xi2/httpgzip v0.0.0-20190509075255-932ab5e254ae
 	golang.org/x/tools v0.0.0-20190923230126-0f9bb8f614ff // indirect
+	honnef.co/go/tools v0.0.1-2019.2.3 // indirect
 )
