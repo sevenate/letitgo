@@ -1,0 +1,94 @@
+name: Build Dev
+on: [push, pull_request]
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.13
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13
+
+    - name: Check out source code
+      uses: actions/checkout@v1
+
+    #- name: Generate the code (go generate)
+    #  run: |
+    #    go generate
+
+    - name: Generate static.go
+      # add executables installed with go get to PATH
+      # TODO: this will hopefully be fixed by
+      # https://github.com/actions/setup-go/issues/14
+      run: |
+        export PATH=${PATH}:`go env GOPATH`/bin
+        go get -u github.com/mjibson/esc
+        esc -o static.go -prefix static static
+
+    - name: Generate resource.syso
+      # add executables installed with go get to PATH
+      # TODO: this will hopefully be fixed by
+      # https://github.com/actions/setup-go/issues/14
+      run: |
+        export PATH=${PATH}:`go env GOPATH`/bin
+        go get -u github.com/josephspurrier/goversioninfo/cmd/goversioninfo
+        goversioninfo -64 -copyright="© `date -u +%Y` Sevenate" -original-name="letitgo.exe" -ver-major=0 -ver-minor=1 -ver-patch=0 -ver-build=0 -product-version="`date -u +%Y%m%d.%H%M%S`-`git rev-parse --abbrev-ref HEAD`-`git rev-parse --short HEAD`"
+
+    - name: Check style (gofmt)
+      run: |
+        diff -u <(echo -n) <(gofmt -d -s .)
+
+    - name: Vet the code (go vet)
+      run: |
+        go vet $(go list ./... | grep -v /vendor/)
+
+    - name: Run staticcheck
+      # add executables installed with go get to PATH
+      # TODO: this will hopefully be fixed by
+      # https://github.com/actions/setup-go/issues/14
+      run: |
+        export PATH=${PATH}:`go env GOPATH`/bin
+        go get -u honnef.co/go/tools/cmd/staticcheck
+        staticcheck ./...
+
+    - name: Run tests
+      run: go test -v -tags test -race -coverprofile=coverage.txt -covermode=atomic ./...
+
+    - name: Build (gox)
+      # add executables installed with go get to PATH
+      # TODO: this will hopefully be fixed by
+      # https://github.com/actions/setup-go/issues/14
+      run: |
+        export PATH=${PATH}:`go env GOPATH`/bin
+        go get -u github.com/mitchellh/gox
+        gox -os="linux darwin windows" -arch="amd64" -output="bin/{{.Dir}}-{{.OS}}-{{.Arch}}" -ldflags "-X main.version=0.1 -X main.date=`date -u --iso-8601=seconds` -X main.commit=`git rev-parse --short HEAD`" -verbose ./...
+
+    #- name: Build (go build)
+    #  run: go build -v -ldflags "-X main.version=0.1 -X main.date=`date -u --iso-8601=seconds` -X main.commit=`git rev-parse --short HEAD`"
+
+    - name: Upload letitgo-windows-amd64.exe
+      uses: actions/upload-artifact@master
+      with:
+        name: letitgo-windows-amd64.exe
+        path: bin/letitgo-windows-amd64.exe
+
+    - name: Upload letitgo-darwin.amd64
+      uses: actions/upload-artifact@master
+      with:
+        name: letitgo-darwin-amd64
+        path: bin/letitgo-darwin-amd64
+
+    - name: Upload letitgo-linux-amd64
+      uses: actions/upload-artifact@master
+      with:
+        name: letitgo-linux-amd64
+        path: bin/letitgo-linux-amd64
+
+    - name: Upload coverage.txt
+      uses: actions/upload-artifact@master
+      with:
+        name: coverage.txt
+        path: coverage.txt

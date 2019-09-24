@@ -4,7 +4,8 @@
 | Branch | Status |
 | ------ |:------:|
 | master | [![Build Status](https://travis-ci.org/sevenate/letitgo.svg?branch=master)](https://travis-ci.org/sevenate/letitgo) |
-| dev    | [![Build Status](https://github.com/sevenate/letitgo/workflows/.github/workflows/main.yml/badge.svg)](https://github.com/sevenate/letitgo/actions) |
+| master | [![Build Status](https://github.com/sevenate/letitgo/workflows/Build%20Master/badge.svg)](https://github.com/sevenate/letitgo/actions) |
+| dev    | [![Build Status](https://github.com/sevenate/letitgo/workflows/Build%20Dev/badge.svg)](https://github.com/sevenate/letitgo/actions) |
 
 [![codecov](https://codecov.io/gh/sevenate/letitgo/branch/master/graph/badge.svg)](https://codecov.io/gh/sevenate/letitgo) [![Coverage Status](https://coveralls.io/repos/github/sevenate/letitgo/badge.svg)](https://coveralls.io/github/sevenate/letitgo) 
 
