@@ -38,7 +38,7 @@ jobs:
       # https://github.com/actions/setup-go/issues/14
       run: |
         export PATH=${PATH}:`go env GOPATH`/bin
-        go get -u github.com/josephspurrier/goversioninfo
+        go get -u github.com/josephspurrier/goversioninfo/cmd/goversioninfo
         goversioninfo -copyright="© `date -u +%Y` Sevenate" -original-name="letitgo.exe" -ver-major=0 -ver-minor=1 -ver-patch=0 -ver-build=0 -product-version="`date -u +%Y%m%d.%H%M%S`-`git rev-parse --abbrev-ref HEAD`-`git rev-parse --short HEAD`"
 
     - name: Check style (gofmt)
