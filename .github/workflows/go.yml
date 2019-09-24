@@ -65,10 +65,16 @@ jobs:
       run: |
         export PATH=${PATH}:`go env GOPATH`/bin
         go get -u github.com/mitchellh/gox
-        gox -os="linux darwin windows" -arch="amd64" -output="{{.Dir}}.{{.OS}}.{{.Arch}}" -ldflags "-X main.version=0.1 -X main.date=`date -u --iso-8601=seconds` -X main.commit=`git rev-parse --short HEAD`" -verbose ./...
+        gox -os="linux darwin windows" -arch="amd64" -output="bin/{{.Dir}}.{{.OS}}.{{.Arch}}" -ldflags "-X main.version=0.1 -X main.date=`date -u --iso-8601=seconds` -X main.commit=`git rev-parse --short HEAD`" -verbose ./...
 
     #- name: Build (go build)
     #  run: go build -v -ldflags "-X main.version=0.1 -X main.date=`date -u --iso-8601=seconds` -X main.commit=`git rev-parse --short HEAD`"
 
     - name: Run tests
       run: go test -v -tags test -race -coverprofile=coverage.txt -covermode=atomic ./...
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@master
+      with:
+        name: binaries
+        path: bin
