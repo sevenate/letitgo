@@ -59,7 +59,7 @@ jobs:
         staticcheck ./...
 
     - name: Build (go build)
-      run: go build -v .
+      run: go build -v -ldflags "-X main.version=0.1 -X main.date=`date -u --iso-8601=seconds` -X main.commit=`git rev-parse --short HEAD`"
 
     - name: Run tests
       run: go test -v -tags test -race -coverprofile=coverage.txt -covermode=atomic ./...
