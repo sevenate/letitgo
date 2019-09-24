@@ -6,13 +6,9 @@
 | master | [![Build Status](https://travis-ci.org/sevenate/letitgo.svg?branch=master)](https://travis-ci.org/sevenate/letitgo) |
 | dev    | [![Build Status](https://travis-ci.org/sevenate/letitgo.svg?branch=dev)](https://travis-ci.org/sevenate/letitgo) |
 
-
-[![Build status](https://ci.appveyor.com/api/projects/status/xupwep6vdtjborv3?svg=true)](https://ci.appveyor.com/project/sevenate/letitgo)
-[![CircleCI](https://circleci.com/gh/sevenate/letitgo.svg?style=svg)](https://circleci.com/gh/sevenate/letitgo)
-[![Build Status](https://sevenate.visualstudio.com/letitgo/_apis/build/status/sevenate.letitgo?branchName=master)](https://sevenate.visualstudio.com/letitgo/_build/latest?definitionId=1&branchName=master)
-
 [![codecov](https://codecov.io/gh/sevenate/letitgo/branch/master/graph/badge.svg)](https://codecov.io/gh/sevenate/letitgo) [![Coverage Status](https://coveralls.io/repos/github/sevenate/letitgo/badge.svg)](https://coveralls.io/github/sevenate/letitgo) 
 
+[![LOC](https://tokei.rs/b1/github/sevenate/letitgo?category=code)](https://github.com/sevenate/letitgo)
 [![GitHub release](https://img.shields.io/github/release/sevenate/letitgo.svg)](https://github.com/sevenate/letitgo/releases)
 
 [Code of Conduct](CODE_OF_CONDUCT.md)

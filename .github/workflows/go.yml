@@ -15,10 +15,6 @@ jobs:
     - name: Check out source code
       uses: actions/checkout@v1
 
-    #- name: Get dependencies (go get)
-    #  run: |
-    #    go get -v -d ./...
-
     #- name: Generate the code (go generate)
     #  run: |
     #    go generate
@@ -65,7 +61,7 @@ jobs:
       run: |
         export PATH=${PATH}:`go env GOPATH`/bin
         go get -u github.com/mitchellh/gox
-        gox -os="linux darwin windows" -arch="amd64" -output="bin/{{.Dir}}.{{.OS}}.{{.Arch}}" -ldflags "-X main.version=0.1 -X main.date=`date -u --iso-8601=seconds` -X main.commit=`git rev-parse --short HEAD`" -verbose ./...
+        gox -os="linux darwin windows" -arch="amd64" -output="bin/{{.Dir}}-{{.OS}}-{{.Arch}}" -ldflags "-X main.version=0.1 -X main.date=`date -u --iso-8601=seconds` -X main.commit=`git rev-parse --short HEAD`" -verbose ./...
 
     #- name: Build (go build)
     #  run: go build -v -ldflags "-X main.version=0.1 -X main.date=`date -u --iso-8601=seconds` -X main.commit=`git rev-parse --short HEAD`"
