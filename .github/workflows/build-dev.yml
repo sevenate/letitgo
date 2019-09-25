@@ -19,6 +19,17 @@ jobs:
     - name: Check out source code
       uses: actions/checkout@v1
 
+
+
+    - name: Get latest git hash
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        git rev-parse --abbrev-ref HEAD
+        echo "$GITHUB_CONTEXT"
+        echo ${{ github.ref }}
+
+
     #- name: Generate the code (go generate)
     #  run: |
     #    go generate
