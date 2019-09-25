@@ -1,5 +1,10 @@
 language: go
 sudo: false
+
+branches:
+  only:
+  - master
+  
 matrix:
   include:
   # "1.x" always refers to the latest Go version, inc. the patch release.
