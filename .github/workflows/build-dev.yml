@@ -31,7 +31,8 @@ jobs:
         timestampVer=$(date -u +%Y%m%d.%H%M%S)
         commit=$(git rev-parse --short HEAD)
         dateIso=$(date -u --iso-8601=seconds)
-        refShort=${${{ github.ref }}:11} 
+        refFull=${{ github.ref }}
+        refShort=${refFull:11} 
         echo "$GITHUB_CONTEXT"
         echo ref=${{ github.ref }}
         echo refShort=$refShort
