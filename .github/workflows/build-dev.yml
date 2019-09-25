@@ -30,7 +30,7 @@ jobs:
         echo ref=${{ github.ref }}
         echo sha=${{ github.sha }}
         echo timestamp=${{ github.event.commits[0].timestamp }}
-        echo branch=$branchName
+        echo branch=${branchName}
 
 
     #- name: Generate the code (go generate)
