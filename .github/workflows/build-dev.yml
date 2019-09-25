@@ -26,11 +26,19 @@ jobs:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
         branchName=`git rev-parse --abbrev-ref HEAD`
+        timestamp=`date -u +%Y`
+        timestamp2=`date -u +%Y%m%d.%H%M%S`
+        commit=`git rev-parse --short HEAD`
+        date2=`date -u --iso-8601=seconds`
         echo "$GITHUB_CONTEXT"
         echo ref=${{ github.ref }}
         echo sha=${{ github.sha }}
         echo timestamp=${{ github.event.commits[0].timestamp }}
-        echo branch=${branchName}
+        echo branch=$branchName
+        echo timestamp
+        echo timestamp2
+        echo date2
+        echo commit
 
 
     #- name: Generate the code (go generate)
