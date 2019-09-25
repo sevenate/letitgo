@@ -20,7 +20,7 @@ jobs:
       uses: actions/checkout@v1
 
 
-
+    # refs/heads/dev
     - name: Get latest git hash
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
@@ -31,8 +31,10 @@ jobs:
         timestampVer=$(date -u +%Y%m%d.%H%M%S)
         commit=$(git rev-parse --short HEAD)
         dateIso=$(date -u --iso-8601=seconds)
+        refShort=${${{ github.ref }}:11} 
         echo "$GITHUB_CONTEXT"
         echo ref=${{ github.ref }}
+        echo refShort=$refShort
         echo sha=${{ github.sha }}
         echo timestamp=${{ github.event.commits[0].timestamp }}
         echo branchName=$branchName
