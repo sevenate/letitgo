@@ -19,30 +19,19 @@ jobs:
     - name: Check out source code
       uses: actions/checkout@v1
 
-    #sha=b86290ec9ef0b9371c590f246953c62f2670a980
-
-    #branchName=dev
-    #dateIso=2019-09-25T22:33:40+00:00
-    #timestampVer=20190925.223340
-    #year=2019
-    #commit=b86290e
-
     - name: Get latest git hash
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
         ref=${{ github.ref }}
         branchName=${ref:11} 
-
         sha=${{ github.sha }}
         shortSha=${sha:0:7}
-
         dateIso=$(date -u --iso-8601=seconds)
         timestampVer=$(date -u +%Y%m%d.%H%M%S)
         year=$(date -u +%Y)
         commit=$(git rev-parse --short HEAD)
-
-#        echo "$GITHUB_CONTEXT"
+        echo "$GITHUB_CONTEXT"
         echo branchName=$branchName
         echo shortSha=$shortSha
 
