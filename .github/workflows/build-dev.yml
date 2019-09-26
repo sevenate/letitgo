@@ -1,8 +1,14 @@
 name: Build Dev
 on:
   push:
+    # Sequence of patterns matched against refs/heads
     branches:
-      - 'dev'
+      - 'dev*'   # Push events on dev branchs
+  pull_request:
+    # Sequence of patterns matched against refs/tags
+    tags:        
+      - 'v*'  # Push events to v1.0.0 (and the like) tag
+
       
 jobs:
 
@@ -19,6 +25,14 @@ jobs:
     - name: Check out source code
       uses: actions/checkout@v1
 
+    - name: Extract branch name
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF##*/})"
+      id: extract_branch
+
+    - name: Extract short SHA
+      run: echo "##[set-output name=commit;]$(echo ${GITHUB_SHA:0:7})"
+      id: extract_short_sha
+
     - name: Get latest git hash
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
@@ -32,15 +46,17 @@ jobs:
         year=$(date -u +%Y)
         commit=$(git rev-parse --short HEAD)
         echo "$GITHUB_CONTEXT"
-        echo branchName=$branchName
         echo shortSha=$shortSha
 
     - name: Print latest git hash
       run: |
+        echo branchName=${{ steps.extract_branch.outputs.branch }}
+        echo commit= ${{ steps.extract_short_sha.outputs.commit }}
         echo dateIso=$dateIso
         echo timestampVer=$timestampVer
         echo year=$year
         echo commit=$commit
+      id: step2
 
     #- name: Generate the code (go generate)
     #  run: |
