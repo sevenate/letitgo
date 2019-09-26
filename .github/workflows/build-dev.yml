@@ -46,11 +46,6 @@ jobs:
         echo branchName=$branchName
         echo shortSha=$shortSha
 
-        echo dateIso=$dateIso
-        echo timestampVer=$timestampVer
-        echo year=$year
-        echo commit=$commit
-
     - name: Print latest git hash
       run: |
         echo dateIso=$dateIso

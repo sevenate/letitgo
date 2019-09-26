@@ -1,5 +1,4 @@
-[![GoDoc](https://godoc.org/github.com/sevenate/letitgo?status.svg)](https://godoc.org/github.com/sevenate/letitgo) [![Maintainability](https://api.codeclimate.com/v1/badges/b9f65985b730b2a6732f/maintainability)](https://codeclimate.com/github/sevenate/letitgo/maintainability) [![BCH compliance](https://bettercodehub.com/edge/badge/sevenate/letitgo?branch=master)](https://bettercodehub.com/) [![Go Report Card](https://goreportcard.com/badge/github.com/sevenate/letitgo)](https://goreportcard.com/report/github.com/sevenate/letitgo)
-
+[![GoDoc](https://godoc.org/github.com/sevenate/letitgo?status.svg)](https://godoc.org/github.com/sevenate/letitgo) [![Maintainability](https://api.codeclimate.com/v1/badges/b9f65985b730b2a6732f/maintainability)](https://codeclimate.com/github/sevenate/letitgo/maintainability) [![BCH compliance](https://bettercodehub.com/edge/badge/sevenate/letitgo?branch=master)](https://bettercodehub.com/) [![Go Report Card](https://goreportcard.com/badge/github.com/sevenate/letitgo)](https://goreportcard.com/report/github.com/sevenate/letitgo) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 | Branch | Status |
 | ------ |:------:|
