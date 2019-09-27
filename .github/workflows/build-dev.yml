@@ -2,12 +2,12 @@ name: Build Dev
 on:
   push:
     # Sequence of patterns matched against refs/heads
-    branches:
-      - 'dev*'   # Push events on dev branchs
+    #branches:
+    #  - 'dev*'   # Push events on dev branchs
   pull_request:
     # Sequence of patterns matched against refs/tags
-    tags:        
-      - 'v*'  # Push events to v1.0.0 (and the like) tag
+    #tags:        
+    #  - 'v*'  # Push events to v1.0.0 (and the like) tag
 
       
 jobs:
