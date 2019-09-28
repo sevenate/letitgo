@@ -25,7 +25,7 @@ import (
 var (
 	host     = flag.String("host", "localhost", "Host name for web service")
 	port     = flag.Int("port", 443, "HTTPS server port to listen")
-	portHttp = flag.Int("portHttp", 80, "HTTP server port to listen (will be redirected to HTTPS port)")
+	portHTTP = flag.Int("portHTTP", 80, "HTTP server port to listen (will be redirected to HTTPS port)")
 	debug    = flag.Bool("debug", false, "Use local files in static/ subfolder instead of embedded")
 	info     = flag.Bool("version", false, "Get the application version")
 
@@ -33,24 +33,24 @@ var (
 	date    = "unknown"
 	commit  = "none"
 
-	numberOfHttpCalls = expvar.NewMap("app-stats")
+	numberOfHTTPCalls = expvar.NewMap("app-stats")
 )
 
-type Info struct {
+type info struct {
 	Version string
 	Commit  string
 	Date    string
 }
 
-func GetInfo() interface{} {
-	return Info{
+func getInfo() interface{} {
+	return info{
 		Version: version,
 		Commit:  commit,
 		Date:    date,
 	}
 }
 
-type NodeInfo struct {
+type nodeInfo struct {
 	Version         string `json:"version"`
 	CurrentBlock    string `json:"current_block"`
 	UncheckedBlocks string `json:"unchecked_blocks"`
@@ -62,7 +62,7 @@ type NodeInfo struct {
 	LedgerFileSize  string `json:"ledger_file_size"`
 }
 
-type NetworkInfo struct {
+type networkInfo struct {
 	OnlineRepresentatives string `json:"online_representatives"`
 	OnlineVotingWeight    string `json:"online_voting_weight"`
 	PeersV17              string `json:"peers_v17"`
@@ -72,7 +72,7 @@ type NetworkInfo struct {
 	PeersV13              string `json:"peers_v13"`
 }
 
-type RepresentativeInfo struct {
+type representativeInfo struct {
 	AccountPart0 string `json:"account_part_0"` // "nano_" prefix
 	AccountPart1 string `json:"account_part_1"` // highlighted 7 leading characters
 	AccountPart2 string `json:"account_part_2"` // remaining 47 characters in the middle
@@ -84,15 +84,15 @@ type RepresentativeInfo struct {
 	Location     string `json:"location"`
 }
 
-type NodeStatusSnapshot struct {
-	NodeInfo           NodeInfo           `json:"node"`
-	NetworkInfo        NetworkInfo        `json:"network"`
-	RepresentativeInfo RepresentativeInfo `json:"representative"`
+type nodeStatusSnapshot struct {
+	nodeInfo           nodeInfo           `json:"node"`
+	networkInfo        networkInfo        `json:"network"`
+	representativeInfo representativeInfo `json:"representative"`
 }
 
 // DEMO DATA
-var nodeStatusSnapshot NodeStatusSnapshot = NodeStatusSnapshot{
-	NodeInfo: NodeInfo{
+var nodeStatusSnapshot nodeStatusSnapshot = nodeStatusSnapshot{
+	nodeInfo: nodeInfo{
 		Version:         "Nano 19.0",
 		CurrentBlock:    "31,966,872",
 		UncheckedBlocks: "48",
@@ -103,7 +103,7 @@ var nodeStatusSnapshot NodeStatusSnapshot = NodeStatusSnapshot{
 		MemoryUsed:      "2,749 / 7,976 MB",
 		LedgerFileSize:  "19.459 GB",
 	},
-	NetworkInfo: NetworkInfo{
+	networkInfo: networkInfo{
 		OnlineRepresentatives: "118",
 		OnlineVotingWeight:    "114,559,823 Nano (85.97 %)",
 		PeersV17:              "213 (75.53%)",
@@ -112,7 +112,7 @@ var nodeStatusSnapshot NodeStatusSnapshot = NodeStatusSnapshot{
 		PeersV14:              "10 (3.55%)",
 		PeersV13:              "2 (0.71%)",
 	},
-	RepresentativeInfo: RepresentativeInfo{
+	representativeInfo: representativeInfo{
 		AccountPart0: "nano_",
 		AccountPart1: "1fnx59b",
 		AccountPart2: "qpx11s1yn7i5hba3ot5no4ypy971zbkp5wtium3yyafpwhh",
@@ -190,7 +190,7 @@ func urlFilterHandler(next http.Handler) http.Handler {
 
 func statsHandler(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		numberOfHttpCalls.Add(r.URL.Path, 1)
+		numberOfHTTPCalls.Add(r.URL.Path, 1)
 		next.ServeHTTP(w, r)
 	})
 }
@@ -214,7 +214,7 @@ func apiHandler() http.Handler {
 			d := json.NewDecoder(r.Body)
 			d.DisallowUnknownFields() // catch unwanted fields
 
-			var incomingData NodeStatusSnapshot
+			var incomingData nodeStatusSnapshot
 
 			err := d.Decode(&incomingData)
 			if err != nil {
@@ -255,7 +255,7 @@ func main() {
 		return
 	}
 
-	expvar.Publish("app-info", expvar.Func(GetInfo))
+	expvar.Publish("app-info", expvar.Func(getInfo))
 
 	mux := http.NewServeMux()
 
@@ -279,7 +279,7 @@ func main() {
 	fmt.Println(startedText)
 
 	// redirect all HTTP -> HTTPS
-	go http.ListenAndServe(*host+":"+strconv.Itoa(*portHttp), redirectChain.Then(redirectTLSHandler()))
+	go http.ListenAndServe(*host+":"+strconv.Itoa(*portHTTP), redirectChain.Then(redirectTLSHandler()))
 
 	// www.selfsignedcertificate.com
 	log.Fatal(srv.ListenAndServeTLS("localhost.cert", "localhost.key"))
