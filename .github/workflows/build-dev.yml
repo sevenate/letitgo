@@ -44,6 +44,9 @@ jobs:
         echo copyright=${{ steps.info.outputs.copyright }}
         echo name_exe=${{ steps.info.outputs.name_exe }}
 
+    - name: Commitsar Action
+      uses: commitsar-app/commitsar@v0.7.0
+  
     - name: Generate static.go
       # add executables installed with go get to PATH
       # TODO: this will hopefully be fixed by
