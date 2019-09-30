@@ -141,7 +141,7 @@ func redirectTLSHandler() http.Handler {
 	})
 }
 
-func Format(n int64) string {
+func format(n int64) string {
 	in := strconv.FormatInt(n, 10)
 	out := make([]byte, len(in)+(len(in)-2+int(in[0]/'0'))/3)
 	if in[0] == '-' {
@@ -169,7 +169,7 @@ func loggerHandler(next http.Handler) http.Handler {
 
 		// as an option to determine if this is HTTP or HTTPS request
 		// check the field TLS *tls.ConnectionState on http.Request for nil
-		log.Printf("[%13s µs] - %s %s %s", aurora.Cyan(Format(friendlyElapsed)), r.Proto, r.Method, r.URL)
+		log.Printf("[%13s µs] - %s %s %s", aurora.Cyan(format(friendlyElapsed)), r.Proto, r.Method, r.URL)
 	})
 }
 
