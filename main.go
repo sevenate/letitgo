@@ -27,7 +27,7 @@ var (
 	port     = flag.Int("port", 443, "HTTPS server port to listen")
 	portHTTP = flag.Int("portHTTP", 80, "HTTP server port to listen (will be redirected to HTTPS port)")
 	debug    = flag.Bool("debug", false, "Use local files in static/ subfolder instead of embedded")
-	info     = flag.Bool("version", false, "Get the application version")
+	about    = flag.Bool("version", false, "Get the application version")
 
 	version = "dev"
 	date    = "unknown"
@@ -85,14 +85,14 @@ type representativeInfo struct {
 }
 
 type nodeStatusSnapshot struct {
-	nodeInfo           nodeInfo           `json:"node"`
-	networkInfo        networkInfo        `json:"network"`
-	representativeInfo representativeInfo `json:"representative"`
+	NodeInfo           nodeInfo           `json:"node"`
+	NetworkInfo        networkInfo        `json:"network"`
+	RepresentativeInfo representativeInfo `json:"representative"`
 }
 
 // DEMO DATA
-var nodeStatusSnapshot nodeStatusSnapshot = nodeStatusSnapshot{
-	nodeInfo: nodeInfo{
+var statusSnapshot nodeStatusSnapshot = nodeStatusSnapshot{
+	NodeInfo: nodeInfo{
 		Version:         "Nano 19.0",
 		CurrentBlock:    "31,966,872",
 		UncheckedBlocks: "48",
@@ -103,7 +103,7 @@ var nodeStatusSnapshot nodeStatusSnapshot = nodeStatusSnapshot{
 		MemoryUsed:      "2,749 / 7,976 MB",
 		LedgerFileSize:  "19.459 GB",
 	},
-	networkInfo: networkInfo{
+	NetworkInfo: networkInfo{
 		OnlineRepresentatives: "118",
 		OnlineVotingWeight:    "114,559,823 Nano (85.97 %)",
 		PeersV17:              "213 (75.53%)",
@@ -112,7 +112,7 @@ var nodeStatusSnapshot nodeStatusSnapshot = nodeStatusSnapshot{
 		PeersV14:              "10 (3.55%)",
 		PeersV13:              "2 (0.71%)",
 	},
-	representativeInfo: representativeInfo{
+	RepresentativeInfo: representativeInfo{
 		AccountPart0: "nano_",
 		AccountPart1: "1fnx59b",
 		AccountPart2: "qpx11s1yn7i5hba3ot5no4ypy971zbkp5wtium3yyafpwhh",
@@ -208,7 +208,7 @@ func apiHandler() http.Handler {
 			// simulated execution time
 			//time.Sleep(500 * time.Millisecond)
 
-			json.NewEncoder(w).Encode(nodeStatusSnapshot)
+			json.NewEncoder(w).Encode(statusSnapshot)
 
 		case "POST":
 			d := json.NewDecoder(r.Body)
@@ -229,7 +229,7 @@ func apiHandler() http.Handler {
 				return
 			}
 
-			nodeStatusSnapshot = incomingData
+			statusSnapshot = incomingData
 
 		default:
 		}
@@ -250,7 +250,7 @@ func main() {
 		s = fmt.Sprintf("%s.%s.%s", version, date, commit)
 	}
 
-	if *info {
+	if *about {
 		fmt.Println(s)
 		return
 	}
