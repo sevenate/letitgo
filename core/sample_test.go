@@ -5,7 +5,7 @@ import (
 )
 
 func TestSum(t *testing.T) {
-	v := Sum(2, 4)
+	v := sum(2, 4)
 
 	if v != 6 {
 		t.Error("Expected 6, got ", v)
@@ -13,7 +13,7 @@ func TestSum(t *testing.T) {
 }
 
 func TestSum2(t *testing.T) {
-	v := Sum(5, 0)
+	v := sum(5, 0)
 
 	if v != 5 {
 		t.Error("Expected 5, got ", v)
