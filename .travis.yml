@@ -11,9 +11,6 @@ matrix:
   # e.g. "1.x" is 1.11 until 1.11.1 is available.
   - go: 1.x
     env: LATEST=true
-  - go: tip
-  allow_failures:
-  - go: tip
 
 before_install:
 - go get github.com/mattn/goveralls
@@ -24,31 +21,42 @@ install:
 - #  Do nothing. This is needed to prevent default install action "go get -t -v ./..." from happening here (we want it to happen inside script step).
 
 script:
-- go get -t -v ./...
+- echo "branch = $(echo $(git rev-parse --abbrev-ref HEAD))"
+- echo "commit = $(echo $(git rev-parse --short HEAD))"
+- echo "date_iso = $(echo $(date -u --iso-8601=seconds))"
+- echo "date_version = $(echo $(date -u +%Y%m%d.%H%M%S))"
+- echo "copyright = $(echo © $(date -u +%Y) Sevenate)"
+- echo "name_exe = letitgo.exe"
+- go get -u github.com/mjibson/esc
+- $GOPATH/bin/esc -o static.go -prefix static static
+- go get -u github.com/josephspurrier/goversioninfo/cmd/goversioninfo
+- $GOPATH/bin/goversioninfo -64 -copyright="$copyright" -original-name="$name_exe" -ver-major=0 -ver-minor=1 -ver-patch=0 -ver-build=0 -product-version="$(date_version)-$(branch)-$(commit)"
 - diff -u <(echo -n) <(gofmt -d -s .)
 # - go vet ./...
 - go vet $(go list ./... | grep -v /vendor/)
+- go get -u honnef.co/go/tools/cmd/staticcheck
+- $GOPATH/bin/staticcheck ./...
 - go test -v -tags test -race -coverprofile=coverage.txt -covermode=atomic ./...
 - $GOPATH/bin/goveralls -service=travis-ci
-# Only build binaries from the latest Go release.
-- if [ "${LATEST}" = "true" ]; then gox -os="linux darwin windows" -arch="amd64" -output="{{.Dir}}.{{.OS}}.{{.Arch}}" -ldflags "-X main.version=0.1 -X main.date=`date -u --iso-8601=seconds` -X main.commit=`git rev-parse --short HEAD`" -verbose ./...; fi
+- go get -u github.com/mitchellh/gox
+- gox -os="linux darwin windows" -arch="amd64" -output="bin/{{.Dir}}-{{.OS}}-{{.Arch}}" -ldflags "-X main.version=0.1 -X main.date=$(date_iso) -X main.commit=$(commit)" -verbose ./...
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 
-deploy:
-  provider: releases
-  skip_cleanup: true
-  api_key:
-    secure: jO49Vd2Fo92uRjNKC9CBReCMsxQzqM6uyvk0Hg4uuEpA+Cq3Yfm8/tLoTDAWfggNGnZAj/CWAoXhGbKCpW4bGUfHQOB5hVyS22VNQaU5FkBXheCie2ai1iUgd8D21excssUhhWBm0Lwtu9dbdsJMw+rTrIuhBl4ZBC/SrAM7ELca4tkaMqT3gff98GW2hD7udgidBnMO1iVxq7wDenuzpRCpuA8op/mT3mc+4yGqQw/Oev95u7LJcvxYt4HaJ77/4Hqc9/cKXOPQiD1/R1voq5HXX+q8H6U1MHL7LI26QKONhHlvbHydY2aWUPgujs81K5cyON4vnHva5+/A+SLhS4tYLAkMSh+O/aFUBQ7mqJ0G2pC+H2oIEJVI+C0Ru5EIKRJJnlTuJT42gm+HwjyQ89ZMaPLL+HG5aTJlLxPI1WvnbUtwnLZnD9IGWHE991LL80KYzadTsq2vpP+28a6/oQvJ+M8SJJEMgiXg6GaBSoWbOKTAnZlUdmBD5oXhvneDZYx6zpAONl9ZzvvbZW3bNzA3ZWueIiom3W9FOeZKULFZ5MRAhHl3zvhUBi021U8735p0QXeyVbET6b4yo4C0czrft83lc5RYYy7YPK7SMEJ3bgZGLVJ3Y7BrQZOkStA/fNfeZmTLqUC8V+XxTa9MveLc/cHj59L4ZIGunkFoRYg=
-  file:
-  # The names of the binaries to output, based on the -output template passed to gox.
-  - letitgo.windows.amd64.exe
-  - letitgo.darwin.amd64
-  - letitgo.linux.amd64
-  on:
-    # What repository to build
-    repo: sevenate/letitgo
-    # Only build binaries for tagged commits
-    tags: true
-    condition: $LATEST = true
+#deploy:
+#  provider: releases
+#  skip_cleanup: true
+#  api_key:
+#    secure: jO49Vd2Fo92uRjNKC9CBReCMsxQzqM6uyvk0Hg4uuEpA+Cq3Yfm8/tLoTDAWfggNGnZAj/CWAoXhGbKCpW4bGUfHQOB5hVyS22VNQaU5FkBXheCie2ai1iUgd8D21excssUhhWBm0Lwtu9dbdsJMw+rTrIuhBl4ZBC/SrAM7ELca4tkaMqT3gff98GW2hD7udgidBnMO1iVxq7wDenuzpRCpuA8op/mT3mc+4yGqQw/Oev95u7LJcvxYt4HaJ77/4Hqc9/cKXOPQiD1/R1voq5HXX+q8H6U1MHL7LI26QKONhHlvbHydY2aWUPgujs81K5cyON4vnHva5+/A+SLhS4tYLAkMSh+O/aFUBQ7mqJ0G2pC+H2oIEJVI+C0Ru5EIKRJJnlTuJT42gm+HwjyQ89ZMaPLL+HG5aTJlLxPI1WvnbUtwnLZnD9IGWHE991LL80KYzadTsq2vpP+28a6/oQvJ+M8SJJEMgiXg6GaBSoWbOKTAnZlUdmBD5oXhvneDZYx6zpAONl9ZzvvbZW3bNzA3ZWueIiom3W9FOeZKULFZ5MRAhHl3zvhUBi021U8735p0QXeyVbET6b4yo4C0czrft83lc5RYYy7YPK7SMEJ3bgZGLVJ3Y7BrQZOkStA/fNfeZmTLqUC8V+XxTa9MveLc/cHj59L4ZIGunkFoRYg=
+#  file:
+#  # The names of the binaries to output, based on the -output template passed to gox.
+#  - letitgo.windows.amd64.exe
+#  - letitgo.darwin.amd64
+#  - letitgo.linux.amd64
+#  on:
+#    # What repository to build
+#    repo: sevenate/letitgo
+#    # Only build binaries for tagged commits
+#    tags: true
+#    condition: $LATEST = true
