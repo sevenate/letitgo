@@ -91,7 +91,7 @@ type nodeStatusSnapshot struct {
 }
 
 // DEMO DATA
-var statusSnapshot nodeStatusSnapshot = nodeStatusSnapshot{
+var statusSnapshot = nodeStatusSnapshot{
 	NodeInfo: nodeInfo{
 		Version:         "Nano 19.0",
 		CurrentBlock:    "31,966,872",
