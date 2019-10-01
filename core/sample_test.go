@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestSum(t *testing.T) {
+func testSum(t *testing.T) {
 	v := sum(2, 4)
 
 	if v != 6 {
@@ -12,7 +12,7 @@ func TestSum(t *testing.T) {
 	}
 }
 
-func TestSum2(t *testing.T) {
+func testSum2(t *testing.T) {
 	v := sum(5, 0)
 
 	if v != 5 {
