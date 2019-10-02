@@ -1,0 +1,39 @@
+#!/bin/bash
+
+branch="$(git rev-parse --abbrev-ref HEAD)"
+commit="$(git rev-parse --short HEAD)"
+date_iso="$(date -u --iso-8601=seconds)"
+date_version="$(date -u +%Y%m%d.%H%M%S)"
+copyright="$(echo © $(date -u +%Y) Sevenate)"
+name_exe="letitgo.exe"
+ver_major=0
+ver_minor=1
+ver_patch=0
+ver_build=0
+test_coverage_output="coverage.txt"
+
+echo branch=$branch
+echo commit=$commit
+echo date_iso=$date_iso
+echo date_version=$date_version
+echo copyright=$copyright
+echo name_exe=$name_exe
+echo ver_major=$ver_major
+echo ver_minor=$ver_minor
+echo ver_patch=$ver_patch
+echo ver_build=$ver_build
+echo test_coverage_output=$test_coverage_output
+
+esc -o static.go -prefix static static
+
+goversioninfo -64 -copyright="$copyright" -original-name="$name_exe" -ver-major="$ver_major" -ver-minor="$ver_minor" -ver-patch="$ver_patch" -ver-build="$ver_build" -product-version="$date_version-$branch-$commit"
+
+diff -u <(echo -n) <(gofmt -d -e -s .)
+
+go vet $(go list ./... | grep -v /vendor/)
+
+staticcheck ./...
+
+go test -v -tags test -race -coverprofile="$test_coverage_output" -covermode=atomic ./...
+
+gox -os="linux darwin windows" -arch="amd64" -output="{{.Dir}}.{{.OS}}.{{.Arch}}" -ldflags "-X main.version=$ver_major.$ver_minor -X main.date=$date_iso -X main.commit=$commit" -verbose ./...

@@ -12,6 +12,7 @@ import (
 	"github.com/fatih/stopwatch"
 	"github.com/justinas/alice"
 	"github.com/logrusorgru/aurora"
+	"github.com/sevenate/letitgo/core"
 	"github.com/vharitonsky/iniflags"
 	"github.com/xi2/httpgzip"
 	"log"
@@ -141,25 +142,6 @@ func redirectTLSHandler() http.Handler {
 	})
 }
 
-func format(n int64) string {
-	in := strconv.FormatInt(n, 10)
-	out := make([]byte, len(in)+(len(in)-2+int(in[0]/'0'))/3)
-	if in[0] == '-' {
-		in, out[0] = in[1:], '-'
-	}
-
-	for i, j, k := len(in)-1, len(out)-1, 0; ; i, j = i-1, j-1 {
-		out[j] = in[i]
-		if i == 0 {
-			return string(out)
-		}
-		if k++; k == 3 {
-			j, k = j-1, 0
-			out[j] = ' '
-		}
-	}
-}
-
 func loggerHandler(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		s := stopwatch.Start(0)
@@ -169,7 +151,7 @@ func loggerHandler(next http.Handler) http.Handler {
 
 		// as an option to determine if this is HTTP or HTTPS request
 		// check the field TLS *tls.ConnectionState on http.Request for nil
-		log.Printf("[%13s µs] - %s %s %s", aurora.Cyan(format(friendlyElapsed)), r.Proto, r.Method, r.URL)
+		log.Printf("[%13s µs] - %s %s %s", aurora.Cyan(core.Format(friendlyElapsed)), r.Proto, r.Method, r.URL)
 	})
 }
 

@@ -13,6 +13,8 @@ matrix:
     env: LATEST=true
 
 before_install:
+- go get -u github.com/mjibson/esc
+- go get -u honnef.co/go/tools/cmd/staticcheck
 - go get github.com/mattn/goveralls
 # gox simplifies building for multiple architectures
 - go get github.com/mitchellh/gox
@@ -32,7 +34,6 @@ script:
 - go get -u github.com/josephspurrier/goversioninfo/cmd/goversioninfo
 - $GOPATH/bin/goversioninfo -64 -copyright="$copyright" -original-name="$name_exe" -ver-major=0 -ver-minor=1 -ver-patch=0 -ver-build=0 -product-version="$date_version-$branch-$commit"
 - diff -u <(echo -n) <(gofmt -d -s .)
-# - go vet ./...
 - go vet $(go list ./... | grep -v /vendor/)
 - go get -u honnef.co/go/tools/cmd/staticcheck
 - $GOPATH/bin/staticcheck ./...
