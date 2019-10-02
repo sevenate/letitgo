@@ -1,7 +1,9 @@
+// Package core provides generic utility functions
 package core // import "github.com/sevenate/letitgo/core"
 
 import "strconv"
 
+// Format will convert integer like -1234567 into string like "-1 234 567".
 func Format(n int64) string {
 	in := strconv.FormatInt(n, 10)
 	out := make([]byte, len(in)+(len(in)-2+int(in[0]/'0'))/3)
