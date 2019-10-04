@@ -24,3 +24,9 @@ jobs:
       #  with:
       #    args: release
       #  if: success()
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@master
+        with:
+          version: latest
+          args: release
