@@ -12,10 +12,10 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v1
 
-      - name: Release Notary Action
-        uses: commitsar-app/release-notary@v0.3.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Release Notary Action
+#        uses: commitsar-app/release-notary@v0.3.0
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run GoReleaser
         uses: docker://goreleaser/goreleaser
