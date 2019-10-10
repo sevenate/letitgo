@@ -249,7 +249,7 @@ func main() {
 	mux.Handle("/debug", defaultChain.Then(expvar.Handler()))
 
 	srv := &http.Server{
-		Addr:           "localhost:" + strconv.Itoa(*port),
+		Addr:           *host + ":" + strconv.Itoa(*port),
 		Handler:        mux,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
