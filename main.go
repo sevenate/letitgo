@@ -27,7 +27,7 @@ var (
 	host     = flag.String("host", "localhost", "Host name for web service")
 	port     = flag.Int("port", 443, "HTTPS server port to listen")
 	portHTTP = flag.Int("portHTTP", 80, "HTTP server port to listen (will be redirected to HTTPS port)")
-	debug    = flag.Bool("debug", false, "Use local files in static/ subfolder instead of embedded")
+	debug    = flag.Bool("debug", false, "Use local files in /static subfolder instead of embedded")
 	about    = flag.Bool("version", false, "Get the application version")
 
 	version = "dev"
