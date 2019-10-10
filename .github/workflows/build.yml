@@ -95,6 +95,9 @@ jobs:
     - name: Run tests
       run: go test -v -tags test -race -coverprofile=coverage.txt -covermode=atomic ./...
 
+    - name: Commitsar Action
+      uses: commitsar-app/commitsar@v0.7.0
+
     - name: Build (gox)
       # add executables installed with go get to PATH
       # TODO: this will hopefully be fixed by
