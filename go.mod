@@ -3,6 +3,7 @@ module github.com/sevenate/letitgo
 go 1.13
 
 require (
+	github.com/FiloSottile/mkcert v1.4.0 // indirect
 	github.com/fatih/stopwatch v1.0.0
 	github.com/justinas/alice v0.0.0-20171023064455-03f45bd4b7da
 	github.com/klauspost/compress v1.8.5 // indirect
