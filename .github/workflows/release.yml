@@ -17,10 +17,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      #- name: goreleaser
-      #  uses: docker://goreleaser/goreleaser
-      #  env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #  with:
-      #    args: release
-      #  if: success()
+      - name: Run GoReleaser
+        uses: docker://goreleaser/goreleaser
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: release
+        if: success()
