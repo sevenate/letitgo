@@ -1,6 +1,6 @@
 module github.com/sevenate/letitgo
 
-go 1.13
+go 1.19
 
 require (
 	github.com/FiloSottile/mkcert v1.4.0 // indirect
