@@ -29,7 +29,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Commitsar Action
-      uses: commitsar-app/commitsar@v0.7.0
+      uses: commitsar-app/commitsar@v0.20.2
 
     - name: Extract branch name, short SHA, date etc. into variables
       run: |
@@ -96,7 +96,7 @@ jobs:
       run: go test -v -tags test -race -coverprofile=coverage.txt -covermode=atomic ./...
 
     - name: Commitsar Action
-      uses: commitsar-app/commitsar@v0.7.0
+      uses: commitsar-app/commitsar@v0.20.2
 
     - name: Build (gox)
       # add executables installed with go get to PATH
