@@ -5,7 +5,7 @@ go 1.13
 require (
 	github.com/FiloSottile/mkcert v1.4.0 // indirect
 	github.com/fatih/stopwatch v1.0.0
-	github.com/justinas/alice v0.0.0-20171023064455-03f45bd4b7da
+	github.com/justinas/alice v1.2.0
 	github.com/klauspost/compress v1.8.5 // indirect
 	github.com/klauspost/cpuid v1.2.1 // indirect
 	github.com/logrusorgru/aurora v0.0.0-20190803045625-94edacc10f9b
